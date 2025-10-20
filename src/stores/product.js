@@ -44,10 +44,10 @@ export const useProductStore = defineStore('product', () => {
       },
     ],
     colors: [
-      { id : 'mixed', name: 'Mixed', classes: 'bg-gradient-to-r from-white via-gray-200 to-gray-900 checked:outline-gray-600' },
-      { id: 'white', name: 'White', classes: 'bg-white checked:outline-gray-400' },
-      { id: 'gray', name: 'Gray', classes: 'bg-gray-200 checked:outline-gray-400' },
-      { id: 'black', name: 'Black', classes: 'bg-gray-900 checked:outline-gray-900' },
+      { id: 'mixed', name: 'Mixed', classes: 'bg-gradient-to-r from-white via-gray-200 to-gray-900 checked:outline-indigo-400' },
+      { id: 'white', name: 'White', classes: 'bg-white checked:outline-indigo-400' },
+      { id: 'gray', name: 'Gray', classes: 'bg-gray-200 checked:outline-indigo-400' },
+      { id: 'black', name: 'Black', classes: 'bg-gray-900 checked:outline-indigo-400' },
     ],
     sizes: [
       { name: 'XXS', inStock: false },
@@ -98,10 +98,10 @@ export const useProductStore = defineStore('product', () => {
       },
     ],
     colors: [
-      { id : 'mixed', name: 'Mixed', classes: 'bg-gradient-to-r from-white via-gray-200 to-gray-900 checked:outline-gray-600' },
-      { id: 'white', name: 'White', classes: 'bg-white checked:outline-gray-400' },
-      { id: 'gray', name: 'Gray', classes: 'bg-gray-200 checked:outline-gray-400' },
-      { id: 'black', name: 'Black', classes: 'bg-gray-900 checked:outline-gray-900' },
+      { id: 'mixed', name: 'Mixed', classes: 'bg-gradient-to-r from-white via-gray-200 to-gray-900 checked:outline-indigo-400' },
+      { id: 'white', name: 'White', classes: 'bg-white checked:outline-indigo-400' },
+      { id: 'gray', name: 'Gray', classes: 'bg-gray-200 checked:outline-indigo-400' },
+      { id: 'black', name: 'Black', classes: 'bg-gray-900 checked:outline-indigo-400' },
     ],
     sizes: [
       { name: 'XXS', inStock: false },
