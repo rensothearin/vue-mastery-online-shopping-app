@@ -1,12 +1,15 @@
 <script setup>
-import HelloWorld from './components/__HelloWorld.vue';
 import HeaderStackedFlyoutMenu from './components/HeaderStackedFlyoutMenu.vue';
 import ProductOverviews from './components/ProductOverviews.vue';
+import StoreNavigator from './components/StoreNavigator.vue';
 
 </script>
 
 <template>
-  <HeaderStackedFlyoutMenu />
+  <!-- This worked before -->
+  <!-- <HeaderStackedFlyoutMenu /> -->
+  
+  <StoreNavigator />
 
   <main>
     <ProductOverviews />
@@ -23,22 +26,4 @@ header {
   margin: 0 auto 2rem;
 }
 
-/* Old code coming with init */
-/* @media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-} */
 </style>

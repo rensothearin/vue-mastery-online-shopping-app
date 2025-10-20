@@ -76,7 +76,7 @@
                   <a href="#" class="block w-full rounded bg-indigo-600 px-4 py-2 text-center text-sm font-semibold text-white hover:bg-indigo-700">Checkout</a>
                 </div>
             </div>
-        </div>
+        </div> 
 
         <a href="#" class="text-sm/6 font-semibold text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
 
@@ -144,6 +144,7 @@ import {
   XMarkIcon,
   ShoppingBagIcon,
 } from '@heroicons/vue/24/outline'
+
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/vue/20/solid'
 
 import { useCart } from '../stores/cart'

@@ -49,7 +49,7 @@
             </div>
           </div>
 
-          <form class="mt-10" @sumbit.prevent="addToCart"">
+          <form class="mt-10" @submit.prevent="addToCart">
             <!-- Colors -->
             <div>
               <h3 class="text-sm font-medium text-gray-900">Color</h3>
@@ -62,7 +62,6 @@
                         type="radio" 
                         name="color" 
                         :value="color.id" 
-                        :checked="color === product.colors[0]" 
                         :class="[color.classes, 'size-8 appearance-none rounded-full forced-color-adjust-none checked:outline checked:outline-2 checked:outline-offset-2 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-[3px]']" 
                         v-model="selectedColor"/>
                   </div>
@@ -93,7 +92,9 @@
               </fieldset>
             </div>
 
-            <button type="submit" class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Add to bag</button>
+            <button type="submit" class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+              Add to bag
+            </button>
           </form>
         </div>
 
@@ -135,88 +136,40 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { StarIcon } from '@heroicons/vue/20/solid'
+import { storeToRefs } from 'pinia'
 import { useCart } from '../stores/cart'
+import { useProductStore } from '../stores/product'
 
-const { addItem } = useCart()
+const cartStore = useCart()
+const { addItem } = cartStore
+const productStore = useProductStore()
+const { product, reviews } = storeToRefs(productStore)
 
-const product = {
-  name: 'Basic Tee 6-Pack',
-  price: '$192',
-  href: '#',
-  breadcrumbs: [
-    { id: 1, name: 'Men', href: '#' },
-    { id: 2, name: 'Clothing', href: '#' },
-  ],
-  images: [
-    {
-      src: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-secondary-product-shot.jpg',
-      alt: 'Two each of gray, white, and black shirts laying flat.',
-    },
-    {
-      src: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg',
-      alt: 'Model wearing plain black basic tee.',
-    },
-    {
-      src: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg',
-      alt: 'Model wearing plain gray basic tee.',
-    },
-    {
-      src: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-featured-product-shot.jpg',
-      alt: 'Model wearing plain white basic tee.',
-    },
-  ],
-  colors: [
-    { id : 'mixed', name: 'Mixed', classes: 'bg-gradient-to-r from-white via-gray-200 to-gray-900 checked:outline-gray-600' },
-    { id: 'white', name: 'White', classes: 'bg-white checked:outline-gray-400' },
-    { id: 'gray', name: 'Gray', classes: 'bg-gray-200 checked:outline-gray-400' },
-    { id: 'black', name: 'Black', classes: 'bg-gray-900 checked:outline-gray-900' },
-  ],
-  sizes: [
-    { name: 'XXS', inStock: false },
-    { name: 'XS', inStock: true },
-    { name: 'S', inStock: true },
-    { name: 'M', inStock: true },
-    { name: 'L', inStock: true },
-    { name: 'XL', inStock: true },
-    { name: '2XL', inStock: true },
-    { name: '3XL', inStock: true },
-  ],
-  description:
-    'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.',
-  highlights: [
-    'Hand cut and sewn locally',
-    'Dyed with our proprietary colors',
-    'Pre-washed & pre-shrunk',
-    'Ultra-soft 100% cotton',
-  ],
-  details:
-    'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
-}
-const reviews = { href: '#', average: 4, totalCount: 117 }
-
-const selectedColor = ref(product.colors[0].id)
+const selectedColor = ref(product.value.colors[0].id)
 const colorImages = {
-    mixed: product.images[0],
-    black: product.images[1],
-    gray: product.images[2],
-    white: product.images[3],
+    mixed: product.value.images[0],
+    black: product.value.images[1],
+    gray: product.value.images[2],
+    white: product.value.images[3],
 }
 const displayedImages = computed(() => {
   const mainImage = colorImages[selectedColor.value];
   if (!mainImage) {
-    return product.images; // Fallback to default images
+    return product.value.images; // Fallback to default images
   }
   // Return the selected color's image first, followed by other images, ensuring no duplicates.
-  return [mainImage, ...product.images.filter(img => img.src !== mainImage.src)];
+  return [mainImage, ...product.value.images.filter(img => img.src !== mainImage.src)];
 })
 
-const firstInStock = product.sizes.find(size => size.inStock)
-const selectedSize = ref(firstInStock ? firstInStock.name : product.sizes[0].name)
+const firstInStock = product.value.sizes.find(size => size.inStock)
+const selectedSize = ref(firstInStock ? firstInStock.name : product.value.sizes[0].name)
 
 function addToCart() {
+  const p = product.value
+  if (!p) return
     addItem({
-        name: product.name,
-        price: product.price,
+        name: product.value.name,
+        price: product.value.price,
         color: selectedColor.value,
         size: selectedSize.value,
         image: displayedImages.value[0]?.src,
