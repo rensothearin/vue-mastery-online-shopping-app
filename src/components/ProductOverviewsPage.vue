@@ -62,7 +62,7 @@
                         type="radio" 
                         name="color" 
                         :value="color.id" 
-                        :class="[color.classes, 'size-8 appearance-none rounded-full forced-color-adjust-none checked:outline checked:outline-2 checked:outline-offset-2 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-[3px]']" 
+                        :class="[color.classes, 'size-8 appearance-none rounded-full forced-color-adjust-none checked:outline checked:outline-1 checked:outline-offset-2 focus-visible:outline focus-visible:outline-[1px] focus-visible:outline-offset-[1px]']" 
                         v-model="selectedColor"/>
                   </div>
                 </div>
@@ -76,7 +76,7 @@
                 <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">Size guide</a>
               </div>
 
-              <fieldset aria-label="Choose a size" class="mt-4">
+              <!-- <fieldset aria-label="Choose a size" class="mt-4">
                 <div class="grid grid-cols-4 gap-3">
                   <label v-for="size in product.sizes" :key="size.name" :aria-label="size.name" class="group relative flex items-center justify-center rounded-md border border-gray-300 bg-white p-3 has-[:checked]:border-indigo-600 has-[:disabled]:border-gray-400 has-[:checked]:bg-indigo-600 has-[:disabled]:bg-gray-200 has-[:disabled]:opacity-25 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-indigo-600">
                     <input 
@@ -89,7 +89,39 @@
                     <span class="text-sm font-medium uppercase text-gray-900 group-has-[:checked]:text-white">{{ size.name }}</span>
                   </label>
                 </div>
+              </fieldset> -->
+              <fieldset aria-label="Choose a size" class="mt-4">
+                <div class="grid grid-cols-4 gap-3">
+                  <label
+                    v-for="size in product.sizes"
+                    :key="size.name"
+                    :aria-label="size.name"
+                    class="relative cursor-pointer rounded-md border border-gray-300 bg-white p-3 text-center
+                          flex items-center justify-center"
+                  >
+                    <input
+                      type="radio"
+                      name="size"
+                      :value="size.name"
+                      :disabled="!size.inStock"
+                      v-model="selectedSize"
+                      class="peer sr-only"
+                    />
+                    <span
+                      class="z-10 text-sm font-medium uppercase text-gray-900 peer-checked:text-white peer-disabled:opacity-50"
+                    >
+                      {{ size.name }}
+                    </span>
+                    <div
+                      class="absolute inset-0 rounded-md border transition
+                            peer-checked:bg-indigo-600 peer-checked:border-indigo-600
+                            peer-disabled:opacity-25"
+                    ></div>
+                  </label>
+                </div>
               </fieldset>
+
+
             </div>
 
             <button type="submit" class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">

@@ -28,7 +28,7 @@
                         <div class="flow-root">
                           <div v-if="state.items.length === 0" class="text-sm text-gray-500">Your cart is empty</div>
                           <ul v-else role="list" class="-my-6 divide-y divide-gray-200">
-                            <li v-for="(it, i) in state.items" :key="i"class="flex py-6">
+                            <li v-for="(it, i) in state.items" :key="i" class="flex py-6">
                               <div class="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
                                 <img :src="it.image" alt="" class="size-full object-cover" />
                               </div>
@@ -41,7 +41,7 @@
                                     </h3>
                                     <p class="ml-4">{{ it.price }}</p>
                                   </div>
-                                  <p class="mt-1 text-sm text-gray-500">{{ it.color }}</p>
+                                  <p class="mt-1 text-sm text-gray-500">{{ it.color }} / {{ it.size}}</p>
                                 </div>
                                 <div class="flex flex-1 items-end justify-between text-sm">
                                   <p class="text-gray-500">Qty {{ it.qty }}</p>
@@ -60,11 +60,13 @@
                     <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
                       <div class="flex justify-between text-base font-medium text-gray-900">
                         <p>Subtotal</p>
-                        <p>{{ subtotal }}</p>
+                        <p>{{ subTotal }}</p>
                       </div>
                       <p class="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                       <div class="mt-6">
-                        <a href="#" class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">Checkout</a>
+                        <!-- <a href="#" class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">Checkout</a> -->
+                         <router-link to="/checkout" class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700" @click="$emit('close')">Checkout</router-link>
+
                       </div>
                       <div class="mt-6 flex justify-center text-center text-sm text-gray-500">
                         <p>
@@ -89,11 +91,15 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 
 import { useCart } from '../stores/cart'
+import { storeToRefs } from 'pinia'
 
+const router = useRouter()
+const cart = useCart()
 // Access the cart store from the parent component 
 // to manage cart state and actions
 // If using Pinia, ensure the store is properly initialized
@@ -101,21 +107,9 @@ import { useCart } from '../stores/cart'
 // then passed down as needed.
 // **Here we directly use the store for simplicity. If it's to use as function, then do not need to destructure.**
 const { state, removeItem } = useCart()
+const { subTotal } = storeToRefs(cart)
 
 defineProps({ open: Boolean })
 defineEmits(['close'])
-
-const tax = ref(0.07) // 7% tax for example
-
-const subtotal = computed(() => {
-  if (!state.items || state.items.length === 0) return '$0.00'
-  const total = state.items.reduce((sum, it) => {
-    // handle prices like "$192"
-    const n = parseFloat(String(it.price).replace(/[^0-9.]/g, '')) || 0
-    return sum + n * (it.qty || 1) * (1 + tax.value)
-  }, 0)
-  // format as USD
-  return total.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
-})
 
 </script>
