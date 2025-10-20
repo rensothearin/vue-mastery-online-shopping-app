@@ -95,19 +95,19 @@ import { useRouter } from 'vue-router'
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 
-import { useCart } from '../stores/cart'
+import { useCartStore } from '../stores/cart'
 import { storeToRefs } from 'pinia'
 
 const router = useRouter()
-const cart = useCart()
+const cartStore = useCartStore()
 // Access the cart store from the parent component 
 // to manage cart state and actions
 // If using Pinia, ensure the store is properly initialized
 // and imported in the parent component
 // then passed down as needed.
 // **Here we directly use the store for simplicity. If it's to use as function, then do not need to destructure.**
-const { state, removeItem } = useCart()
-const { subTotal } = storeToRefs(cart)
+const { state, subTotal } = storeToRefs(cartStore)
+const { removeItem } = cartStore
 
 defineProps({ open: Boolean })
 defineEmits(['close'])

@@ -3,7 +3,7 @@
 import { defineStore } from "pinia";
 import { ref, reactive, computed } from "vue";
 
-export const useCart = defineStore('cart', () => {
+export const useCartStore = defineStore('cart', () => {
     const state = reactive({
         items: [], // { name, price, color, size, image, qty }
     })
@@ -44,4 +44,6 @@ export const useCart = defineStore('cart', () => {
     })
 
     return { state, addItem, clearCart, itemCount, removeItem, subTotal, tax, rawSubTotal };
+}, {
+    persist: true,
 });

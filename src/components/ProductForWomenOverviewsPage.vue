@@ -169,10 +169,10 @@
 import { ref, computed } from 'vue'
 import { StarIcon } from '@heroicons/vue/20/solid'
 import { storeToRefs } from 'pinia'
-import { useCart } from '../stores/cart'
+import { useCartStore } from '../stores/cart'
 import { useProductStore } from '../stores/product'
 
-const cartStore = useCart()
+const cartStore = useCartStore()
 const { addItem } = cartStore
 const productStore = useProductStore()
 const { womenProduct, reviews } = storeToRefs(productStore)

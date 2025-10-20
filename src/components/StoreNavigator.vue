@@ -328,10 +328,10 @@ const navigation = {
     { name: 'Stores', href: '/store-details' }, // Make this link to the ShopStorePage.vue file
   ],
 }
-import { useCart } from '../stores/cart'
+import { useCartStore } from '../stores/cart'
 import { storeToRefs } from 'pinia';
 
-const cartStore = useCart()
+const cartStore = useCartStore()
 
 // Destructure to get state and itemCount properties from the store
 const { state, itemCount } = storeToRefs(cartStore)
