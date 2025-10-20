@@ -1,18 +1,12 @@
 <script setup>
-import HeaderStackedFlyoutMenu from './components/HeaderStackedFlyoutMenu.vue';
-import ProductOverviews from './components/ProductOverviews.vue';
 import StoreNavigator from './components/StoreNavigator.vue';
-
 </script>
 
-<template>
-  <!-- This worked before -->
-  <!-- <HeaderStackedFlyoutMenu /> -->
-  
+<template>  
   <StoreNavigator />
 
   <main>
-    <ProductOverviews />
+    <router-view></router-view>
   </main>
 </template>
 

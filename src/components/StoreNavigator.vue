@@ -92,7 +92,7 @@
 
             <!-- Logo -->
             <div class="ml-4 flex lg:ml-0">
-              <a href="#">
+              <a href="/">
                 <span class="sr-only">Your Company</span>
                 <img class="h-8 w-auto" src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600" alt="" />
               </a>
@@ -203,7 +203,7 @@ import {
   TransitionRoot,
 } from '@headlessui/vue'
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/vue/24/outline'
-import HeaderStackedShoppingCart from './HeaderStackedShoppingCart.vue';
+import HeaderStackedShoppingCart from './HeaderStackedShoppingCartPopover.vue';
 
 const navigation = {
   categories: [
@@ -325,7 +325,7 @@ const navigation = {
   ],
   pages: [
     { name: 'Company', href: '#' },
-    { name: 'Stores', href: '#' },
+    { name: 'Stores', href: '/store-details' }, // Make this link to the ShopStorePage.vue file
   ],
 }
 import { useCart } from '../stores/cart'
