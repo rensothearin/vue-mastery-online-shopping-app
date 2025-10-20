@@ -213,7 +213,7 @@ const navigation = {
       featured: [
         {
           name: 'New Arrivals',
-          href: '#',
+          href: '/women',
           imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/mega-menu-category-01.jpg',
           imageAlt: 'Models sitting back to back, wearing Basic Tee in black and bone.',
         },
@@ -271,7 +271,7 @@ const navigation = {
       featured: [
         {
           name: 'New Arrivals',
-          href: '#',
+          href: '/men',
           imageSrc:
             'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg',
           imageAlt: 'Drawstring top with elastic loop closure and textured interior padding.',

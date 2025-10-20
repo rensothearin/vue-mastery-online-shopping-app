@@ -4,7 +4,7 @@
     <div class="pt-6">
       <nav aria-label="Breadcrumb">
         <ol role="list" class="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-          <li v-for="breadcrumb in product.breadcrumbs" :key="breadcrumb.id">
+          <li v-for="breadcrumb in menProduct.breadcrumbs" :key="breadcrumb.id">
             <div class="flex items-center">
               <a :href="breadcrumb.href" class="mr-2 text-sm font-medium text-gray-900">{{ breadcrumb.name }}</a>
               <svg width="16" height="20" viewBox="0 0 16 20" fill="currentColor" aria-hidden="true" class="h-5 w-4 text-gray-300">
@@ -13,7 +13,7 @@
             </div>
           </li>
           <li class="text-sm">
-            <a :href="product.href" aria-current="page" class="font-medium text-gray-500 hover:text-gray-600">{{ product.name }}</a>
+            <a :href="menProduct.href" aria-current="page" class="font-medium text-gray-500 hover:text-gray-600">{{ menProduct.name }}</a>
           </li>
         </ol>
       </nav>
@@ -29,13 +29,13 @@
       <!-- Product info -->
       <div class="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto_auto_1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
         <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-          <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{{ product.name }}</h1>
+          <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{{ menProduct.name }}</h1>
         </div>
 
         <!-- Options -->
         <div class="mt-4 lg:row-span-3 lg:mt-0">
           <h2 class="sr-only">Product information</h2>
-          <p class="text-3xl tracking-tight text-gray-900">{{ product.price }}</p>
+          <p class="text-3xl tracking-tight text-gray-900">{{ menProduct.price }}</p>
 
           <!-- Reviews -->
           <div class="mt-6">
@@ -56,7 +56,7 @@
 
               <fieldset aria-label="Choose a color" class="mt-4">
                 <div class="flex items-center gap-x-3">
-                  <div v-for="color in product.colors" :key="color.id" class="flex rounded-full outline outline-1 -outline-offset-1 outline-black/10">
+                  <div v-for="color in menProduct.colors" :key="color.id" class="flex rounded-full outline outline-1 -outline-offset-1 outline-black/10">
                     <input 
                         :aria-label="color.name" 
                         type="radio" 
@@ -93,7 +93,7 @@
               <fieldset aria-label="Choose a size" class="mt-4">
                 <div class="grid grid-cols-4 gap-3">
                   <label
-                    v-for="size in product.sizes"
+                    v-for="size in menProduct.sizes"
                     :key="size.name"
                     :aria-label="size.name"
                     class="relative cursor-pointer rounded-md border border-gray-300 bg-white p-3 text-center
@@ -136,7 +136,7 @@
             <h3 class="sr-only">Description</h3>
 
             <div class="space-y-6">
-              <p class="text-base text-gray-900">{{ product.description }}</p>
+              <p class="text-base text-gray-900">{{ menProduct.description }}</p>
             </div>
           </div>
 
@@ -145,7 +145,7 @@
 
             <div class="mt-4">
               <ul role="list" class="list-disc space-y-2 pl-4 text-sm">
-                <li v-for="highlight in product.highlights" :key="highlight" class="text-gray-400">
+                <li v-for="highlight in menProduct.highlights" :key="highlight" class="text-gray-400">
                   <span class="text-gray-600">{{ highlight }}</span>
                 </li>
               </ul>
@@ -156,7 +156,7 @@
             <h2 class="text-sm font-medium text-gray-900">Details</h2>
 
             <div class="mt-4 space-y-6">
-              <p class="text-sm text-gray-600">{{ product.details }}</p>
+              <p class="text-sm text-gray-600">{{ menProduct.details }}</p>
             </div>
           </div>
         </div>
@@ -175,33 +175,33 @@ import { useProductStore } from '../stores/product'
 const cartStore = useCart()
 const { addItem } = cartStore
 const productStore = useProductStore()
-const { product, reviews } = storeToRefs(productStore)
+const { menProduct, reviews } = storeToRefs(productStore)
 
-const selectedColor = ref(product.value.colors[0].id)
+const selectedColor = ref(menProduct.value.colors[0].id)
 const colorImages = {
-    mixed: product.value.images[0],
-    black: product.value.images[1],
-    gray: product.value.images[2],
-    white: product.value.images[3],
+    mixed: menProduct.value.images[0],
+    black: menProduct.value.images[1],
+    gray: menProduct.value.images[2],
+    white: menProduct.value.images[3],
 }
 const displayedImages = computed(() => {
   const mainImage = colorImages[selectedColor.value];
   if (!mainImage) {
-    return product.value.images; // Fallback to default images
+    return menProduct.value.images; // Fallback to default images
   }
   // Return the selected color's image first, followed by other images, ensuring no duplicates.
-  return [mainImage, ...product.value.images.filter(img => img.src !== mainImage.src)];
+  return [mainImage, ...menProduct.value.images.filter(img => img.src !== mainImage.src)];
 })
 
-const firstInStock = product.value.sizes.find(size => size.inStock)
-const selectedSize = ref(firstInStock ? firstInStock.name : product.value.sizes[0].name)
+const firstInStock = menProduct.value.sizes.find(size => size.inStock)
+const selectedSize = ref(firstInStock ? firstInStock.name : menProduct.value.sizes[0].name)
 
 function addToCart() {
-  const p = product.value
+  const p = menProduct.value
   if (!p) return
     addItem({
-        name: product.value.name,
-        price: product.value.price,
+        name: menProduct.value.name,
+        price: menProduct.value.price,
         color: selectedColor.value,
         size: selectedSize.value,
         image: displayedImages.value[0]?.src,
