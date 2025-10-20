@@ -47,9 +47,13 @@
                 <div>
                   <label class="block text-sm text-gray-700 mb-1">Country</label>
                   <select v-model="form.country" class="w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
-                    <option>United States</option>
-                    <option>Canada</option>
-                    <option>Mexico</option>
+                    <option v-if="countriesLoading" value="">Loading countries...</option>
+                    <option v-else-if="countriesError" value="">{{ countriesError }}</option>
+                    <template v-else>
+                      <option v-for="country in countries" :key="country.iso2" :value="country.name">
+                        {{ country.name }}
+                      </option>
+                    </template>
                   </select>
                 </div>
                 <div>
@@ -220,10 +224,14 @@ import { ref, reactive, computed, onMounted, onBeforeUnmount } from 'vue'
 import { storeToRefs } from 'pinia'
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon, TrashIcon } from '@heroicons/vue/24/outline'
 
-import { useCart } from '../stores/cart'
+import { useCartStore } from '../stores/cart'
+import { useCountries } from '../api/countries'
 
-const { state, removeItem } = useCart()
-const { subTotal, rawSubTotal, tax } = storeToRefs(useCart())
+const cartStore = useCartStore()
+const { state, subTotal, rawSubTotal, tax } = storeToRefs(cartStore)
+const { removeItem } = cartStore
+
+const { countries, loading: countriesLoading, error: countriesError } = useCountries()
 
 const form = reactive({
   email: '',
