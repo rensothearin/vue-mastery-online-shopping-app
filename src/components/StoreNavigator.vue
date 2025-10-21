@@ -81,7 +81,7 @@
     <header class="relative bg-white">
       <p class="flex h-10 items-center justify-center bg-indigo-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">Get free delivery on orders over $100</p>
 
-      <nav aria-label="Top" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <nav aria-label="Top" class="mx-auto px-4 sm:px-6 lg:px-8">
         <div class="border-b border-gray-200">
           <div class="flex h-16 items-center">
             <button type="button" class="relative rounded-md bg-white p-2 text-gray-400 lg:hidden" @click="open = true">
@@ -103,7 +103,9 @@
               <div class="flex h-full space-x-8">
                 <Popover v-for="category in navigation.categories" :key="category.name" class="flex" v-slot="{ open }">
                   <div class="relative flex">
-                    <PopoverButton :class="[open ? 'text-indigo-600' : 'text-gray-700 hover:text-gray-800', 'relative flex items-center justify-center text-sm font-medium transition-colors duration-200 ease-out']">
+                    <PopoverButton
+                      :class="[open ? 'text-indigo-600' : 'text-gray-700 hover:text-gray-800', 'relative flex items-center justify-center text-sm font-medium transition-colors duration-200 ease-out focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0']"
+                    >
                       {{ category.name }}
                       <span :class="[open ? 'bg-indigo-600' : '', 'absolute inset-x-0 -bottom-px z-30 h-0.5 transition duration-200 ease-out']" aria-hidden="true" />
                     </PopoverButton>
@@ -152,13 +154,43 @@
                 <a href="/signup" class="text-sm font-medium text-gray-700 hover:text-gray-800">Create account</a>
               </div>
 
-              <div class="hidden lg:ml-8 lg:flex">
+              <!-- <div class="hidden lg:ml-8 lg:flex">
                 <a href="#" class="flex items-center text-gray-700 hover:text-gray-800">
                   <img src="https://tailwindcss.com/plus-assets/img/flags/flag-canada.svg" alt="" class="block h-auto w-5 shrink-0" />
                   <span class="ml-3 block text-sm font-medium">CAD</span>
                   <span class="sr-only">, change currency</span>
                 </a>
-              </div>
+              </div> -->
+
+              <PopoverGroup class="hidden lg:flex lg:justify-end lg:space-x-4 ml-4">
+                <!-- single country selector: shows selected country and lets user pick from list -->
+                <div class="relative">
+                  <Popover class="relative">
+                    <PopoverButton class="w-full rounded-md bg-indigo-600 py-2 text-white text-sm font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                       <span v-if="selectedCountry">
+                          <!-- <img
+                            :v-if="isFlagUrl"
+                            :src="selectedCountry.unicodeFlag" 
+                            :alt="selectedCountry.iso3" 
+                            class="block h-auto w-5 shrink-0" />-->
+                            <span class="text-md font-medium text-white-700 hover:text-white-800 px-3"> 
+                              {{ selectedCountry.name}} ({{ selectedCountry.unicodeFlag }})
+                            </span>
+                        </span>
+                    </PopoverButton>
+
+                    <transition enter-active-class="transition ease-out duration-150" enter-from-class="opacity-0 translate-y-1" enter-to-class="opacity-100 translate-y-0" leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 translate-y-1">
+                      <PopoverPanel style="z-index: 999; height: 50vh;" class="absolute right-0 mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black/5 overflow-auto">
+                        <div class="p-2">
+                          <button v-for="country in countries" :key="country.iso3" @click="selectCountry(country)" class="flex w-full items-center gap-2 rounded-md px-2 py-2 text-sm hover:bg-gray-50">
+                            <span class="flex-1 text-left">{{ country.name }} <span class="text-xs text-gray-400">({{ country.iso3 }})</span></span>
+                          </button>
+                        </div>
+                      </PopoverPanel>
+                    </transition>
+                  </Popover>
+                </div>
+              </PopoverGroup>
 
               <!-- Search -->
               <div class="flex lg:ml-6">
@@ -186,7 +218,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch, computed } from 'vue'
 import {
   Dialog,
   DialogPanel,
@@ -324,18 +356,42 @@ const navigation = {
     },
   ],
   pages: [
-    { name: 'Company', href: '#' },
+    { name: 'Company', href: '/company-overview' },
     { name: 'Stores', href: '/store-details' }, // Make this link to the ShopStorePage.vue file
   ],
 }
 import { useCartStore } from '../stores/cart'
-import { storeToRefs } from 'pinia';
+import { storeToRefs } from 'pinia'
+import { useCountriesStore } from '@/stores/countries'
 
 const cartStore = useCartStore()
-
 // Destructure to get state and itemCount properties from the store
 const { state, itemCount } = storeToRefs(cartStore)
 
+const { countries, loading: countriesLoading, error: countriesError } = useCountriesStore()
+
 const open = ref(false)
 const cartOpen = ref(false)
+
+const defaultCountry = ref("CAN")
+const selectedCountry = ref(null)
+
+// Detect if the flag is a URL or an emoji
+const isFlagUrl = computed(() => {
+  console.log('selectedCountry:', selectedCountry.value)
+  const f = selectedCountry.value?.unicodeFlag
+  if (!f || typeof f !== 'string') return false
+  return /^https?:\/\//.test(f) || f.startsWith('/') || f.startsWith('data:image') || f.endsWith('.svg')
+})
+
+// Watch for changes in selectedCountry and log the new value
+watch(countries, (list) => {
+  if (!list || list.length === 0) return
+  // Set default country based on defaultCountry ISO3 code
+  selectedCountry.value = list.find(c => c.iso3 == defaultCountry.value) || list[0]
+}, { immediate: true })
+
+function selectCountry(country) {
+  selectedCountry.value = country
+}
 </script>

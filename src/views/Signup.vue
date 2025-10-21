@@ -277,7 +277,7 @@
                 <img width="{231}" height="100" src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600" alt="Logo" />
               </router-link>
               <p class="text-center text-gray-400 dark:text-white/60">
-                Free and Open-Source Tailwind CSS Admin Dashboard Template
+                Your most realiable shopping partner for your fashion needs.
               </p>
             </div>
           </div>

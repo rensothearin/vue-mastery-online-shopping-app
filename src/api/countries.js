@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import axios from 'axios';
 
-export function useCountries() {
+export function useCountriesApi() {
   const countries = ref([]);
   const loading = ref(true);
   const error = ref(null);

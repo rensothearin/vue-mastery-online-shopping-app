@@ -225,13 +225,13 @@ import { storeToRefs } from 'pinia'
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon, TrashIcon } from '@heroicons/vue/24/outline'
 
 import { useCartStore } from '../stores/cart'
-import { useCountries } from '../api/countries'
+import { useCountriesApi } from '../api/countries'
 
 const cartStore = useCartStore()
 const { state, subTotal, rawSubTotal, tax } = storeToRefs(cartStore)
 const { removeItem } = cartStore
 
-const { countries, loading: countriesLoading, error: countriesError } = useCountries()
+const { countries, loading: countriesLoading, error: countriesError } = useCountriesApi()
 
 const form = reactive({
   email: '',
