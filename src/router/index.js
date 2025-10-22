@@ -1,12 +1,12 @@
 // src/router/index.js
 
 import { createRouter, createWebHistory } from 'vue-router';
-import ProductForMenOverviewsPage from '../views/ProductForMenOverviewsPage.vue';
-import ProductForWomenOverviewsPage from '../views/ProductForWomenOverviewsPage.vue';
-import ProductCheckoutPage from '../views/ProductCheckoutPage.vue';
-import ShopStorePage from '../views/ShopStorePage.vue';
-import Signin from '../views/Signin.vue';
-import Signup from '../views/Signup.vue';
+import ProductForMenOverviewsPage from '../views/ProductForMenOverview.vue';
+import ProductForWomenOverviewsPage from '../views/ProductForWomenOverview.vue';
+import ProductCheckoutPage from '../views/ProductCheckoutView.vue';
+import ShopStorePage from '../views/ShopStoreView.vue';
+import Signin from '../views/SigninView.vue';
+import Signup from '../views/SignupView.vue';
 import CompanyOverview from '@/views/CompanyOverview.vue';
 
 const routes = [
